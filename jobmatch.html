@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerCue - Job Matches</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #1e3a5f;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu .user-name {
+            color: white;
+            margin-right: 15px;
+        }
+        
+        .menu-button {
+            background-color: #4fd1c5;
+            color: #1e3a5f;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tab.active {
+            background-color: #4fd1c5;
+            color: white;
+        }
+        
+        .nav-tab:hover:not(.active) {
+            background-color: #f0f0f0;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 30px 0;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: #1e3a5f;
+            margin-bottom: 15px;
+        }
+        
+        .page-title p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        /* Filters Section */
+        .filters-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .filters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 180px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        .filter-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+        }
+        
+        .filter-button, .save-search-button {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .filter-button {
+            background-color: #4fd1c5;
+            color: white;
+        }
+        
+        .save-search-button {
+            background-color: #1e3a5f;
+            color: white;
+        }
+        
+        /* Job Listings */
+        .job-listings {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        
+        .job-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .match-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #4fd1c5;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #1e3a5f;
+            font-weight: bold;
+        }
+        
+        .job-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #1e3a5f;
+        }
+        
+        .company-name {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .job-details {
+            margin-bottom: 20px;
+        }
+        
+        .job-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .detail-icon {
+            margin-right: 8px;
+            color: #4fd1c5;
+            font-size: 1rem;
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .skill-tag {
+            background-color: #e0f7fa;
+            color: #00838f;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .job-card-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .action-button {
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        
+        .prepare-button {
+            background-color: #4fd1c5;
+            color: white;
+            flex: 1;
+            margin-right: 10px;
+        }
+        
+        .prepare-button:hover {
+            background-color: #38b2ac;
+        }
+        
+        .save-button {
+            background-color: #f0f0f0;
+            color: #666;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .save-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        /* Interview Prep Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-container {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            color: #1e3a5f;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .interview-prep-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        .interview-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .interview-tab.active {
+            color: #4fd1c5;
+            border-bottom-color: #4fd1c5;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .question-card, .company-insight, .skill-assessment {
+            background-color: #f8f8f8;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .question {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .answer-hint {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .practice-answer {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-height: 100px;
+            margin-top: 10px;
+        }
+        
+        .company-insight {
+            display: flex;
+        }
+        
+        .company-insight-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+            color: #1e3a5f;
+        }
+        
+        .skill-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .skill-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .skill-rating {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .rating-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4fd1c5;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .pagination-button {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination-button:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .pagination-button.active {
+            background-color: #4fd1c5;
+            color: white;
+            border-color: #4fd1c5;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #1e3a5f;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer-links {
+            margin: 15px 0;
+        }
+        
+        .footer-links a {
+            color: #4fd1c5;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        
+        .copyright {
+            margin-top: 15px;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4fd1c5;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Resume Analyzer Indicator */
+        .resume-status {
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-left: 4px solid #4fd1c5;
+            display: flex;
+            align-items: center;
+        }
+
+        .resume-status i {
+            font-size: 1.5rem;
+            color: #4fd1c5;
+            margin-right: 15px;
+        }
+
+        .resume-status-text h3 {
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+
+        .resume-status-text p {
+            color: #666;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4fd1c5;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+        
+        .no-jobs-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+        .logo{
+          max-width: 100px;
+          height: auto;
+        }
+        .logoname{
+          display: flex;
+          align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+              <div class="logoname">
+              <img src="logo.jpg" alt="careercraft" class="logo">
+                <div class="logo">CareerCraft</div></div>
+                <div class="user-menu">
+                    <span class="user-name" id="user-name">Bhavana</span>
+                    <button class="menu-button" id="logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="container">
+        <div class="nav-tabs">
+            <div class="nav-tab">Dashboard</div>
+            <div class="nav-tab">My Resume</div>
+            <div class="nav-tab active">Job Matches</div>
+            <div class="nav-tab">Interview Prep</div>
+            <div class="nav-tab">Settings</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="main-content">
+        <div class="container">
+            <div class="page-title">
+                <h1>Your Job Matches</h1>
+                <p>We found these opportunities that match your profile. Select a job to start preparing for your interview.</p>
+            </div>
+            
+            <!-- Resume analyzer indicator -->
+            <div class="resume-status" id="resume-analyzer">
+                <i class="fas fa-file-alt"></i>
+                <div class="resume-status-text">
+                    <h3>Resume Analysis</h3>
+                    <p>We're analyzing your resume to find the best job matches.</p>
+                </div>
+            </div>
+
+            <div class="resume-status hidden" id="resume-analysis-complete">
+                <i class="fas fa-check-circle"></i>
+                <div class="resume-status-text">
+                    <h3>Analysis Complete</h3>
+                    <p>We've found <span id="job-match-count">12</span> jobs that match your skills and experience.</p>
+                </div>
+            </div>
+            
+            <div id="analysis-loader">
+                <div class="loader"></div>
+                <p style="text-align: center; color: #666;">Analyzing your resume and finding matches...</p>
+            </div>
+            
+            <div id="job-content" class="hidden">
+                <div class="filters-section">
+                    <input type="text" id="job-search" placeholder="Search for jobs, skills, or companies..." class="search-box">
+                    
+                    <div class="filters-container">
+                        <div class="filter-group">
+                            <label for="company-filter">Company</label>
+                            <select id="company-filter">
+                                <option value="">All Companies</option>
+                                <option value="Google">Google</option>
+                                <option value="Microsoft">Microsoft</option>
+                                <option value="Amazon">Amazon</option>
+                                <option value="Meta">Meta</option>
+                                <option value="Adobe">Adobe</option>
+                                <option value="Salesforce">Salesforce</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="role-filter">Job Role</label>
+                            <select id="role-filter">
+                                <option value="">All Roles</option>
+                                <option value="Data Scientist">Data Scientist</option>
+                                <option value="Software Engineer">Software Engineer</option>
+                                <option value="Product Manager">Product Manager</option>
+                                <option value="UX Designer">UX Designer</option>
+                                <option value="Backend Developer">Backend Developer</option>
+                                <option value="Frontend Developer">Frontend Developer</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="match-filter">Match %</label>
+                            <select id="match-filter">
+                                <option value="">All Matches</option>
+                                <option value="90">90%+</option>
+                                <option value="80">80%+</option>
+                                <option value="70">70%+</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="location-filter">Location</label>
+                            <select id="location-filter">
+                                <option value="">All Locations</option>
+                                <option value="Remote">Remote</option>
+                                <option value="San Francisco, CA">San Francisco, CA</option>
+                                <option value="New York, NY">New York, NY</option>
+                                <option value="Seattle, WA">Seattle, WA</option>
+                                <option value="Bangalore">Bangalore</option>
+                                <option value="Hyderabad">Hyderabad</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-buttons">
+                            <button class="filter-button" id="apply-filters">Apply Filters</button>
+                            <button class="save-search-button">Save Search</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Job Listings -->
+                <div class="job-listings" id="job-listings"></div>
+                
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="pagination-button" id="prev-page"><i class="fas fa-chevron-left"></i></button>
+                    <button class="pagination-button active">1</button>
+                    <button class="pagination-button">2</button>
+                    <button class="pagination-button">3</button>
+                    <button class="pagination-button" id="next-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interview Prep Modal -->
+    <div class="modal-overlay" id="interview-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-job-title">Interview Preparation</h2>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            
+            <div class="interview-prep-tabs">
+                <div class="interview-tab active" data-tab="questions">Common Questions</div>
+                <div class="interview-tab" data-tab="company">Company Insights</div>
+                <div class="interview-tab" data-tab="skills">Skill Assessment</div>
+            </div>
+            
+            <div id="questions-tab" class="tab-content active">
+                <div class="question-card">
+                    <div class="question">Tell me about your experience with machine learning models.</div>
+                    <div class="answer-hint">Focus on specific ML projects you've worked on, algorithms you're familiar with, and how you've applied them to solve real-world problems.</div>
+                    <textarea class="practice-answer" placeholder="Practice your answer here..."></textarea>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question">How do you handle large datasets and ensure model performance?</div>
+                    <div class="answer-hint">Discuss techniques for data preprocessing, feature selection, dimensionality reduction, and model optimization strategies.</div>
+                    <textarea class="practice-answer" placeholder="Practice your answer here..."></textarea>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question">Can you explain a challenging data problem you solved and your approach?</div>
+                    <div class="answer-hint">Structure your response using the STAR method (Situation, Task, Action, Result) and emphasize your analytical thinking.</div>
+                    <textarea class="practice-answer" placeholder="Practice your answer here..."></textarea>
+                </div>
+            </div>
+            
+            <div id="company-tab" class="tab-content">
+                <div class="company-insight">
+                    <div class="company-insight-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div>
+                        <h3>Company Culture</h3>
+                        <p>This company values innovation, collaboration, and data-driven decision making. They have a strong emphasis on work-life balance and continuous learning. Team members often mention the supportive environment and opportunities for growth.</p>
+                    </div>
+                </div>
+                
+                <div class="company-insight">
+                    <div class="company-insight-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h3>Recent Initiatives</h3>
+                        <p>They recently launched a new AI platform that focuses on natural language processing. They're also expanding their cloud services division and investing heavily in sustainability initiatives. Mentioning awareness of these projects can demonstrate your interest in the company.</p>
+                    </div>
+                </div>
+                
+                <div class="company-insight">
+                    <div class="company-insight-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h3>Interview Process</h3>
+                        <p>Their interview process typically involves 3-4 rounds, including a technical assessment, problem-solving exercises, and behavioral questions. They value candidates who can demonstrate both technical expertise and strong communication skills.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="skills-tab" class="tab-content">
+                <div class="skill-assessment">
+                    <div class="skill-title">Machine Learning</div>
+                    <div class="skill-description">Understanding of ML algorithms, model training, validation, and deployment. Familiarity with frameworks like TensorFlow or PyTorch.</div>
+                    <div class="skill-rating">
+                        <span class="rating-label">Your Resume Match:</span>
+                        <span class="rating-label">85%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-assessment">
+                    <div class="skill-title">Data Analysis</div>
+                    <div class="skill-description">Ability to clean, process, visualize, and derive insights from large datasets. Experience with statistical analysis and hypothesis testing.</div>
+                    <div class="skill-rating">
+                        <span class="rating-label">Your Resume Match:</span>
+                        <span class="rating-label">92%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 92%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-assessment">
+                    <div class="skill-title">Python Programming</div>
+                    <div class="skill-description">Proficiency in Python, including common data science libraries like Pandas, NumPy, Scikit-learn, and Matplotlib.</div>
+                    <div class="skill-rating">
+                        <span class="rating-label">Your Resume Match:</span>
+                        <span class="rating-label">95%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 95%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-assessment">
+                    <div class="skill-title">SQL & Database Knowledge</div>
+                    <div class="skill-description">Ability to write complex queries, understand database design, and efficiently retrieve and manipulate data.</div>
+                    <div class="skill-rating">
+                        <span class="rating-label">Your Resume Match:</span>
+                        <span class="rating-label">78%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 78%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">Job saved to your favorites!</div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+          <img src="logo.jpg" alt="careercraft" class="logo">
+            <div style="color: white; font-weight: bold; font-size: 1.2rem; margin-bottom: 20px;">CareerCraft</div>
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="copyright">© 2025 CareerCue. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample resume data
+        const resumeData = {
+            name: "Bhavana",
+            skills: ["Python", "Data Analysis", "Machine Learning", "SQL", "TensorFlow", "Data Visualization", 
+                    "React", "JavaScript", "Node.js", "UX Design", "Product Management", "API Development"],
+            experience: ["Data Scientist", "Machine Learning Engineer", "Frontend Developer"],
+            education: ["Computer Science", "Master's Degree"],
+            preferredLocations: ["Remote", "Bangalore", "San Francisco, CA"]
+        };
+
+        // Sample job listings based on resume
+        const jobListings = [
+            {
+                id: 1,
+                title: "Senior Data Scientist",
+                company: "Google",
+                location: "Bangalore",
+                type: "Full-time",
+                salary: "$120,000 - $150,000",
+                matchPercentage: 92,
+                skills: ["Python", "Machine Learning", "TensorFlow", "SQL", "Data Visualization"],
+                postedDate: "3 days ago",
+                description: "Looking for an experienced Data Scientist to join our team working on cutting-edge AI initiatives."
+            },
+            {
+                id: 2,
+                title: "Machine Learning Engineer",
+                company: "Microsoft",
+                location: "Remote",
+                type: "Full-time",
+                salary: "$130,000 - $160,000",
+                matchPercentage: 88,
+                skills: ["Python", "TensorFlow", "Deep Learning", "Computer Vision", "NLP"],
+                postedDate: "1 week ago",
+                description: "Join our AI research team to develop state-of-the-art machine learning models for our cloud services."
+            },
+            {
+                id: 3,
+                title: "Data Analyst",
+                company: "Amazon",
+                location: "Seattle, WA",
+                type: "Full-time",
+                salary: "$90,000 - $120,000",
+                // Continuing from where the code was cut off
+                matchPercentage: 85,
+                skills: ["SQL", "Python", "Data Analysis", "Tableau", "Excel"],
+                postedDate: "2 days ago",
+                description: "Seeking a Data Analyst to help interpret complex datasets and provide actionable insights."
+            },
+            {
+                id: 4,
+                title: "Frontend Developer",
+                company: "Meta",
+                location: "San Francisco, CA",
+                type: "Full-time",
+                salary: "$110,000 - $140,000",
+                matchPercentage: 82,
+                skills: ["React", "JavaScript", "HTML", "CSS", "UI/UX"],
+                postedDate: "5 days ago",
+                description: "Join our team to build engaging user interfaces for our social media platforms."
+            },
+            {
+                id: 5,
+                title: "Product Manager - AI",
+                company: "Adobe",
+                location: "Remote",
+                type: "Full-time",
+                salary: "$125,000 - $155,000",
+                matchPercentage: 80,
+                skills: ["Product Management", "AI/ML Knowledge", "User Research", "Agile"],
+                postedDate: "1 week ago",
+                description: "Lead the development of AI-powered features in our creative software suite."
+            },
+            {
+                id: 6,
+                title: "Backend Developer",
+                company: "Salesforce",
+                location: "Hyderabad",
+                type: "Full-time",
+                salary: "$95,000 - $125,000",
+                matchPercentage: 78,
+                skills: ["Node.js", "API Development", "Database Design", "Cloud Services"],
+                postedDate: "3 days ago",
+                description: "Build scalable backend systems for our CRM platform."
+            },
+            {
+                id: 7,
+                title: "UX Researcher",
+                company: "Google",
+                location: "Bangalore",
+                type: "Full-time",
+                salary: "$90,000 - $110,000",
+                matchPercentage: 75,
+                skills: ["User Research", "Prototyping", "UX Design", "Data Analysis"],
+                postedDate: "2 weeks ago",
+                description: "Conduct user research to improve our product experiences."
+            },
+            {
+                id: 8,
+                title: "Full Stack Developer",
+                company: "Microsoft",
+                location: "New York, NY",
+                type: "Full-time",
+                salary: "$120,000 - $150,000",
+                matchPercentage: 85,
+                skills: ["JavaScript", "React", "Node.js", "Python", "Database Design"],
+                postedDate: "4 days ago",
+                description: "Create end-to-end solutions for our enterprise customers."
+            },
+            {
+                id: 9,
+                title: "Data Engineer",
+                company: "Amazon",
+                location: "Remote",
+                type: "Full-time",
+                salary: "$115,000 - $145,000",
+                matchPercentage: 83,
+                skills: ["Python", "SQL", "Spark", "Data Pipelines", "AWS"],
+                postedDate: "1 week ago",
+                description: "Build robust data pipelines to support our analytics infrastructure."
+            },
+            {
+                id: 10,
+                title: "ML Ops Engineer",
+                company: "Salesforce",
+                location: "San Francisco, CA",
+                type: "Full-time",
+                salary: "$130,000 - $160,000",
+                matchPercentage: 81,
+                skills: ["Machine Learning", "CI/CD", "Python", "Cloud Infrastructure"],
+                postedDate: "3 days ago",
+                description: "Develop and maintain infrastructure for deploying ML models at scale."
+            },
+            {
+                id: 11,
+                title: "AI Research Scientist",
+                company: "Meta",
+                location: "Bangalore",
+                type: "Full-time",
+                salary: "$140,000 - $180,000",
+                matchPercentage: 90,
+                skills: ["Deep Learning", "Research", "Python", "TensorFlow", "NLP"],
+                postedDate: "1 week ago",
+                description: "Conduct cutting-edge research in artificial intelligence and machine learning."
+            },
+            {
+                id: 12,
+                title: "Data Science Manager",
+                company: "Adobe",
+                location: "Seattle, WA",
+                type: "Full-time",
+                salary: "$150,000 - $190,000",
+                matchPercentage: 87,
+                skills: ["Team Leadership", "Machine Learning", "Strategy", "Python", "Project Management"],
+                postedDate: "5 days ago",
+                description: "Lead a team of data scientists working on innovative analytics solutions."
+            }
+        ];
+
+        // DOM Elements
+        const jobListingsContainer = document.getElementById('job-listings');
+        const interviewModal = document.getElementById('interview-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalJobTitle = document.getElementById('modal-job-title');
+        const notification = document.getElementById('notification');
+        const interviewTabs = document.querySelectorAll('.interview-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const resumeAnalyzer = document.getElementById('resume-analyzer');
+        const analysisLoader = document.getElementById('analysis-loader');
+        const resumeComplete = document.getElementById('resume-analysis-complete');
+        const jobContent = document.getElementById('job-content');
+        const jobMatchCount = document.getElementById('job-match-count');
+
+        // Filter elements
+        const jobSearch = document.getElementById('job-search');
+        const companyFilter = document.getElementById('company-filter');
+        const roleFilter = document.getElementById('role-filter');
+        const matchFilter = document.getElementById('match-filter');
+        const locationFilter = document.getElementById('location-filter');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+
+        // Pagination buttons
+        const prevPageBtn = document.getElementById('prev-page');
+        const nextPageBtn = document.getElementById('next-page');
+        const paginationButtons = document.querySelectorAll('.pagination-button');
+
+        // Simulate resume analysis
+        setTimeout(() => {
+            resumeAnalyzer.classList.add('hidden');
+            analysisLoader.classList.add('hidden');
+            resumeComplete.classList.remove('hidden');
+            jobContent.classList.remove('hidden');
+            jobMatchCount.textContent = jobListings.length;
+            
+            // Render job listings
+            renderJobListings(jobListings);
+        }, 3000);
+
+        // Render job listings
+        function renderJobListings(jobs) {
+            jobListingsContainer.innerHTML = '';
+            
+            if (jobs.length === 0) {
+                jobListingsContainer.innerHTML = `
+                    <div class="no-jobs-message">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #ddd; margin-bottom: 15px;"></i>
+                        <h3>No jobs match your filters</h3>
+                        <p>Try adjusting your search criteria or clearing filters</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            jobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'job-card';
+                
+                // Create company logo placeholder
+                const logoInitial = job.company.charAt(0);
+                
+                jobCard.innerHTML = `
+                    <div class="match-badge">${job.matchPercentage}% Match</div>
+                    <div class="company-logo">${logoInitial}</div>
+                    <h3 class="job-title">${job.title}</h3>
+                    <div class="company-name">${job.company}</div>
+                    <div class="job-details">
+                        <div class="job-detail">
+                            <i class="fas fa-map-marker-alt detail-icon"></i>
+                            <span>${job.location}</span>
+                        </div>
+                        <div class="job-detail">
+                            <i class="fas fa-briefcase detail-icon"></i>
+                            <span>${job.type}</span>
+                        </div>
+                        <div class="job-detail">
+                            <i class="fas fa-dollar-sign detail-icon"></i>
+                            <span>${job.salary}</span>
+                        </div>
+                        <div class="job-detail">
+                            <i class="fas fa-clock detail-icon"></i>
+                            <span>Posted ${job.postedDate}</span>
+                        </div>
+                    </div>
+                    <div class="skills-list">
+                        ${job.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                    <div class="job-card-actions">
+                        <button class="action-button prepare-button" data-job-id="${job.id}">
+                            <i class="fas fa-clipboard-check"></i> Prepare for Interview
+                        </button>
+                        <button class="action-button save-button" data-job-id="${job.id}">
+                            <i class="far fa-bookmark"></i>
+                        </button>
+                    </div>
+                `;
+                
+                jobListingsContainer.appendChild(jobCard);
+            });
+            
+            // Add event listeners to new buttons
+            document.querySelectorAll('.prepare-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const jobId = this.getAttribute('data-job-id');
+                    const job = jobListings.find(job => job.id === parseInt(jobId));
+                    openInterviewModal(job);
+                });
+            });
+            
+            document.querySelectorAll('.save-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.innerHTML = '<i class="fas fa-bookmark"></i>';
+                    showNotification('Job saved to your favorites!');
+                });
+            });
+        }
+
+        // Filter jobs
+        function filterJobs() {
+            const searchTerm = jobSearch.value.toLowerCase();
+            const company = companyFilter.value;
+            const role = roleFilter.value;
+            const match = matchFilter.value;
+            const location = locationFilter.value;
+            
+            const filteredJobs = jobListings.filter(job => {
+                // Search by title, company, skills
+                const searchMatch = job.title.toLowerCase().includes(searchTerm) || 
+                                 job.company.toLowerCase().includes(searchTerm) || 
+                                 job.skills.some(skill => skill.toLowerCase().includes(searchTerm)) ||
+                                 job.description.toLowerCase().includes(searchTerm);
+                
+                // Filter by company
+                const companyMatch = company === '' || job.company === company;
+                
+                // Filter by role (partial match on title)
+                const roleMatch = role === '' || job.title.includes(role);
+                
+                // Filter by match percentage
+                const matchPercentageMatch = match === '' || job.matchPercentage >= parseInt(match);
+                
+                // Filter by location
+                const locationMatch = location === '' || job.location === location;
+                
+                return searchMatch && companyMatch && roleMatch && matchPercentageMatch && locationMatch;
+            });
+            
+            renderJobListings(filteredJobs);
+        }
+
+        // Open interview preparation modal
+        function openInterviewModal(job) {
+            modalJobTitle.textContent = `Interview Preparation: ${job.title} at ${job.company}`;
+            interviewModal.style.display = 'flex';
+        }
+
+        // Show notification
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Event Listeners
+        closeModalBtn.addEventListener('click', () => {
+            interviewModal.style.display = 'none';
+        });
+
+        interviewTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                interviewTabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+
+        applyFiltersBtn.addEventListener('click', filterJobs);
+
+        // Simple search as user types
+        jobSearch.addEventListener('input', filterJobs);
+
+        // Close modal when clicking outside
+        interviewModal.addEventListener('click', function(event) {
+            if (event.target === interviewModal) {
+                interviewModal.style.display = 'none';
+            }
+        });
+
+        // Pagination functionality (simplified)
+        prevPageBtn.addEventListener('click', () => {
+            showNotification('Loading previous page...');
+        });
+        
+        nextPageBtn.addEventListener('click', () => {
+            showNotification('Loading next page...');
+        });
+        
+        // For demo purposes - toggle bookmark icons
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('fa-bookmark')) {
+                if (e.target.classList.contains('far')) {
+                    e.target.classList.remove('far');
+                    e.target.classList.add('fas');
+                    showNotification('Job saved to your favorites!');
+                } else {
+                    e.target.classList.remove('fas');
+                    e.target.classList.add('far');
+                    showNotification('Job removed from your favorites');
+                }
+            }
+        });
+
+        // Initialize the page with all jobs
+        setTimeout(() => {
+            renderJobListings(jobListings);
+        }, 3200);
+    </script>
+</body>
+</html>

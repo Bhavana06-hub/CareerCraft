@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CareerCue - Upload Resume</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      background-color: #1e3a5f;
+      padding: 40px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    .logo {
+      max-width: 100px;
+      height: auto;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-menu .user-name {
+      color: white;
+      margin-right: 15px;
+    }
+
+    .menu-button {
+      background-color: #4fd1c5;
+      color: #1e3a5f;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .main-content {
+      padding: 50px 0;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .page-title h1 {
+      font-size: 2.5rem;
+      color: #1e3a5f;
+      margin-bottom: 15px;
+    }
+
+    .page-title p {
+      font-size: 1.1rem;
+      color: #666;
+    }
+
+    .upload-section {
+      background-color: white;
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      max-width: 800px;
+      margin: 0 auto 50px;
+    }
+
+    .section-header {
+      font-size: 1.8rem;
+      color: #1e3a5f;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .file-input-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+      border: 2px dashed #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .file-input-container:hover {
+      border-color: #4fd1c5;
+    }
+
+    .file-input-container input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .file-icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+      color: #4fd1c5;
+    }
+
+    .file-instructions {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .file-types {
+      font-size: 0.9rem;
+      color: #999;
+    }
+
+    .selected-file {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      display: none;
+    }
+
+    .submit-btn {
+      background-color: #4fd1c5;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #38b2ac;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo-container">
+          <img src="logo.jpg" alt="CareerCue Logo" class="logo">
+          <div>CareerCraft</div>
+        </div>
+        <div class="user-menu">
+          <span class="user-name" id="user-name"></span>
+          <button class="menu-button" id="logout-btn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <section class="main-content">
+    <div class="container">
+      <div class="page-title">
+        <h1>Upload Your Resume</h1>
+        <p>Let us know about your skills and experience to help you find the perfect job match.</p>
+      </div>
+
+      <form id="resume-form">
+        <div class="upload-section">
+          <h2 class="section-header">Resume Upload</h2>
+
+          <div class="form-group">
+            <label for="resume-file">Upload Your Resume</label>
+            <div class="file-input-container" id="file-drop-area">
+              <input type="file" id="resume-file" accept=".pdf,.doc,.docx" />
+              <div class="file-icon">📄</div>
+              <p class="file-instructions">Drag & drop your resume here or click to browse</p>
+              <p class="file-types">Accepts PDF, DOC, DOCX (Max 5MB)</p>
+            </div>
+            <div class="selected-file" id="selected-file"></div>
+          </div>
+
+          <div class="button-row">
+            <button type="button" class="submit-btn" id="view-btn">View</button>
+            <button type="submit" class="submit-btn" id="submit-btn">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Check if user is logged in
+      const loggedIn = localStorage.getItem('loggedIn');
+      if (!loggedIn || loggedIn !== 'true') {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // Display user name
+      const userName = localStorage.getItem('userName') || localStorage.getItem('userEmail');
+      document.getElementById('user-name').textContent = userName;
+
+      // Logout functionality
+      document.getElementById('logout-btn').addEventListener('click', function () {
+        localStorage.removeItem('loggedIn');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        window.location.href = 'index.html';
+      });
+
+      // File input handling
+      const fileInput = document.getElementById('resume-file');
+      const selectedFileDisplay = document.getElementById('selected-file');
+      const dropArea = document.getElementById('file-drop-area');
+
+      function displaySelectedFile(file) {
+        if (file.size > 5 * 1024 * 1024) {
+          alert('File is too large. Maximum size is 5MB.');
+          return false;
+        }
+
+        const validTypes = [
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ];
+        if (!validTypes.includes(file.type)) {
+          alert('Invalid file type. Please upload a PDF or Word document.');
+          return false;
+        }
+
+        selectedFileDisplay.textContent = `Selected: ${file.name}`;
+        selectedFileDisplay.style.display = 'block';
+        return true;
+      }
+
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) displaySelectedFile(file);
+      });
+
+      dropArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropArea.style.borderColor = '#4fd1c5';
+      });
+
+      dropArea.addEventListener('dragleave', () => {
+        dropArea.style.borderColor = '#ddd';
+      });
+
+      dropArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropArea.style.borderColor = '#ddd';
+        const file = e.dataTransfer.files[0];
+        if (file) {
+          fileInput.files = e.dataTransfer.files;
+          displaySelectedFile(file);
+        }
+      });
+
+      // View button functionality
+      document.getElementById('view-btn').addEventListener('click', () => {
+        const file = fileInput.files[0];
+        if (file) {
+          const fileURL = URL.createObjectURL(file);
+          window.open(fileURL, '_blank');
+        } else {
+          alert("Please upload a resume first.");
+        }
+      });
+
+      // Submit form functionality
+      document.getElementById('resume-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const file = fileInput.files[0];
+        if (!file) {
+          alert("Please upload a resume before submitting.");
+          return;
+        }
+        
+        const isValid = displaySelectedFile(file);
+        if (isValid) {
+          // Save resume information to localStorage if needed
+          localStorage.setItem('resumeUploaded', 'true');
+          
+          // Show success message
+          alert("Resume submitted successfully!");
+          
+          // Redirect to job match page
+          window.location.href = 'jobmatch.html';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
